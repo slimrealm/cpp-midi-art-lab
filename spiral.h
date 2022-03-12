@@ -12,9 +12,7 @@
 using namespace sf;
 
 /**
-* Spiral class
-*
-* get window dimensions, define drawing algorithms, declare main functions
+* Spiral class - for spiral-drawing algorithm
 */
 class Spiral {
 public:

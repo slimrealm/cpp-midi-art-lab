@@ -48,7 +48,6 @@ void Test::run(RenderWindow &window, int &width, int &height, int testChoice) {
 				}
 				pollInput(done);
 				if (done) {
-					std::cout << "\nSEE GRAPHICS WINDOW\n";
 					midiInStop(hMidiDevice);
 					midiInClose(hMidiDevice);
 					hMidiDevice = NULL;
@@ -64,12 +63,12 @@ void Test::run(RenderWindow &window, int &width, int &height, int testChoice) {
 		bool done = false;
 		std::cout << "\n\nPlay any notes on MIDI controller (press 'q' to quit test)\n\n";
 
-		//prep progression marker
+		//load progression marker
 		markerTex.loadFromFile("Images/marker.png");
 		progressionMarker.setTexture(markerTex);
 		progressionMarker.setOrigin(2, 0);
 
-		//prep circles
+		//load circles
 		circleTex.loadFromFile("Images/circle.png");
 		for (int i = 0; i < 1000; i++) {
 			circles[i].setTexture(circleTex);
@@ -78,19 +77,19 @@ void Test::run(RenderWindow &window, int &width, int &height, int testChoice) {
 			circles[i].setOrigin(midX, midY);
 		}
 
-		//RESET CLOCKS
+		//reset clocks
 		oneSecondTimer.restart();
 		updateClock.restart();
 
 		while (!done) {
-			//STOP WHEN REACHES ONE MINUTE
+			//stop after 1 minute
 			if (updateClock.getElapsedTime().asSeconds() > 60.f) {
-					std::cout << "ONE MINUTE REACHED! ";
+					std::cout << "one minute reached.";
 
 				//update texture from screen and save it to file
 				Texture saveTex;
 				if (!saveTex.create(width, height)) {
-					std::cout << "Image problem\n";
+					std::cout << "failed to create texture for screenshot.\n";
 					while (1) {}
 					exit(1);
 				}
@@ -99,13 +98,11 @@ void Test::run(RenderWindow &window, int &width, int &height, int testChoice) {
 				saveTex.update(window);
 				saveImage = saveTex.copyToImage();
 				if (!saveImage.saveToFile("Images/savedDrawing.png")) {
-					std::cout << "Image problem\n";
-					while (1) {}
+					std::cout << "failed to create image for screenshot.\n";
 					exit(1);
 				}
-				std::cout << "DONE\n";
+				std::cout << "screenshot saved!\n";
 				window.clear();
-				std::cout << "\nSEE GRAPHICS WINDOW\n";
 				midiInStop(hMidiDevice);
 				midiInClose(hMidiDevice);
 				hMidiDevice = NULL;
@@ -132,20 +129,20 @@ void Test::run(RenderWindow &window, int &width, int &height, int testChoice) {
 			pollInput(done);
 
 			if (done) {
-				std::cout << "\nSEE GRAPHICS WINDOW\n";
 				midiInStop(hMidiDevice);
 				midiInClose(hMidiDevice);
 				hMidiDevice = NULL;
 				return;
 			}
-			//every second, show framerate and reset counter and clock
-			if (oneSecondTimer.getElapsedTime().asSeconds() >= 1.f) {
-				//display framerate
+
+			/* for benchmarking -- every second, show framerate and reset counter and clock
+				if (oneSecondTimer.getElapsedTime().asSeconds() >= 1.f) {
 				std::cout << "fps: " << frames << "\n";
 				oneSecondTimer.restart();
 				frames = 0;
-			}
-			//draw each subsequent frame at [100] fps
+			}*/
+
+			//draw each subsequent frame at current fps
 			if (updates < (fps * updateClock.getElapsedTime().asSeconds())) {
 				update(window);
 			}
@@ -185,8 +182,7 @@ void Test::pollInput(bool &done) {
 			return;
 		}
 	}
-} //pollInput
-
+}
 
 void Test::update(RenderWindow &window) {
 	static int durationIn, noteIn, velocityIn;
@@ -240,28 +236,8 @@ void Test::render(RenderWindow &window) {
 	window.draw(progressionMarker);
 	window.display();
 
-	//TEST IMAGE REFRESH
-	//update texture from screen and refresh it to screen
+	//test image refresh -- update texture from screen and refresh it to screen
 	imageTex.update(window);
 	refreshSprite.setTexture(imageTex);
 	frames++;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

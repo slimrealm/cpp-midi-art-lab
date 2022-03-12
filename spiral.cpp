@@ -11,7 +11,6 @@ extern std::queue<int> inputQueue;
 void Spiral::run(RenderWindow &window, int &width, int &height) {
 	srand((unsigned)time(NULL));
 
-	//reset these variables every time spiral runs
 	firstPass = false;
 	spiralInit = false;
 	currColor = Color::Black;
@@ -51,7 +50,7 @@ void Spiral::run(RenderWindow &window, int &width, int &height) {
 	arrowTex.loadFromFile("Images/Arrow.png");
 	arrow.setTexture(arrowTex);
 	arrow.setOrigin(16, 8);
-	burstTex.loadFromFile("Images/bigLeaf.png"); //("Images/Mallow.png");
+	burstTex.loadFromFile("Images/bigLeaf.png");
 	for (int i = 0; i < 32; i++) {
 		burst[i].setTexture(burstTex);
 		burst[i].setOrigin(151, 296);
@@ -59,11 +58,10 @@ void Spiral::run(RenderWindow &window, int &width, int &height) {
 	drawingActive = true;
 	drawingClock.restart();
 
-	//MAIN LOOP
+	//main loop
 	while (drawingActive) {	
 		pollInput();
 		if (update(window)) {
-			//update(window);
 			render(window);
 		}
 		totalIterations++;
@@ -75,6 +73,7 @@ void Spiral::run(RenderWindow &window, int &width, int &height) {
 		while (1) {}
 		exit(1);
 	}
+
 	//update texture from screen and save it to file
 	Image saveImage;
 	saveImage.create((unsigned int)width, (unsigned int)height, Color::Black);
@@ -103,11 +102,9 @@ void Spiral::awaitFirstMIDIBytes() {
 	}
 }
 
-//THIS WILL EVENTUALLY LISTEN FOR MIDI BYTES -- FOR NOW, IT WILL GENERATE RANDOM "MIDI BYTES"
+//check for MIDI bytes
 void Spiral::pollInput() {
-	//check for MIDI bytes
 	if (_kbhit()) {
-		//Sleep(100);
 		int c = _getch();
 		if (c == VK_ESCAPE) {
 			for (int temp = 0; temp < 100; temp++)
