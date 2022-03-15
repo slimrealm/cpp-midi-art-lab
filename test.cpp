@@ -162,9 +162,7 @@ void Test::run(RenderWindow &window, int &width, int &height, int testChoice) {
 }
 
 /**
-* pollInput() function
-*
-* Check the USB MIDI connection for new incoming data.  If there is new data, a CALLBACK is triggered and
+* Checks the USB MIDI connection for new incoming data.  If there is new data, a callback is triggered and
 * the new pitch, velocity, and status bytes are pushed to the input queue for later access by the
 * grabAndPopNextInput() function.
 */

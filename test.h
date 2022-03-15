@@ -9,6 +9,7 @@
 #include <conio.h>
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
+
 using namespace sf;
 
 class Test {

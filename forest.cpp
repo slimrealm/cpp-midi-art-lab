@@ -23,7 +23,7 @@ void Forest::run(RenderWindow &window, int &width, int &height) {
 	window.clear(darkGreen);
 	window.display();
 
-	//MIDI SETUP
+	//MIDI setup
 	HMIDIIN hMidiDevice = NULL;
 	DWORD nMidiPort = 0;
 	UINT nMidiDeviceNum;
@@ -52,7 +52,7 @@ void Forest::run(RenderWindow &window, int &width, int &height) {
 	drawingActive = true;
 	drawingClock.restart();
 
-	//MAIN LOOP
+	//main loop
 	while (drawingActive) {
 		while (window.pollEvent(event))
 		{
@@ -68,7 +68,7 @@ void Forest::run(RenderWindow &window, int &width, int &height) {
 		render(window);
 	}
 
-	//SAVE TO FILE
+	//save to file
 	Texture saveTex;
 	if (!saveTex.create((unsigned int)width, (unsigned int)height)) {
 		std::cout << "Image problem\n";
@@ -91,7 +91,7 @@ void Forest::run(RenderWindow &window, int &width, int &height) {
 	hMidiDevice = NULL;
 }
 
-//LISTEN FOR MIDI BYTES
+//listen for MIDI bytes
 void Forest::pollInput() {
 	if (_kbhit()) {
 		int c = _getch();
@@ -138,11 +138,11 @@ void Forest::addPressReleaseShapes() {
 	//Pressed key
 	if (onOff == 1) {
 		//change trajectory based on noteIn
-		angleChange = float((noteIn - 65)) / 5.f; //88-key piano note range = 21 - 108
+		angleChange = float((noteIn - 65)) / 5.f; //88-key piano note range: 21 <--> 108
 		trajDeg += angleChange;
 		trajRad = trajDeg * conv;
 
-		//set fatness based on velocityIn
+		//set shape thickness based on velocityIn
 		fatness = float(velocityIn / 64.f);
 
 		//Draw one tree at cursor

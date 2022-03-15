@@ -119,7 +119,7 @@ void Spiral::pollInput() {
 
 bool Spiral::update(RenderWindow &window) {
 	bool needToRender = false;
-	if (timeForMarkerTick()) { //SETS NEXT (x,y) POINT ON THE SPIRAL
+	if (timeForMarkerTick()) { //sets next (x,y) point on the spiral
 		MarkerTick(window);
 	}
 	if (!inputQueue.empty()) {
@@ -172,15 +172,15 @@ void Spiral::addCorrespondingShapes() {
 		float baseYSpacing = (satelliteSpacing * 20) * sin(thetaRadians);
 		for (int currLayer = 1; currLayer < layers; currLayer++) {
 			//layer indices: | 1 | 2-3 | 4-7 | 8-15 | 16-31 |
-			// who spawns who: | 1 -> 2,3 | 2 -> 4,5 | 3 -> 6,7 | 4 -> 8,9 | ... ... | 15 -> 30-31 |    n -> 2n,2n+1
+			// who spawns who: | 1 -> 2,3 | 2 -> 4,5 | 3 -> 6,7 | 4 -> 8,9 | ... | 15 -> 30-31 |    n -> 2n,2n+1
 
-			//for each index in previous layer, get satellite x,y points for TWO SATELLITES
+			//for each index in previous layer, get satellite x,y points for two satellites
 			for (int index = int(pow(2, currLayer - 1)); index < int(pow (2, currLayer)); index++) {
 
 				//next point 1
 				burstIndex++;
-				burstX[burstIndex] = burstX[index] + baseXSpacing * pow(0.7f, float(currLayer));//(DISTANCE EQUATION);	//burstX[2*index]
-				burstY[burstIndex] = burstY[index] - baseYSpacing * pow(0.7f, float(currLayer));//(DISTANCE EQUATION);	//burstY[2*index]
+				burstX[burstIndex] = burstX[index] + baseXSpacing * pow(0.7f, float(currLayer));//(distance equation);	//alt: burstX[2*index]
+				burstY[burstIndex] = burstY[index] - baseYSpacing * pow(0.7f, float(currLayer));//(distance equation);	//alt: burstY[2*index]
 				//create & initialize satellite bursts
 				burst[burstIndex].setColor(currColor);
 				burst[burstIndex].setRotation(rotation);
@@ -189,8 +189,8 @@ void Spiral::addCorrespondingShapes() {
 				burstIndex++;
 
 				//next point 2
-				burstX[burstIndex] = burstX[index] - baseXSpacing * pow(0.7f, float(currLayer));// (DISTANCE EQUATION);	//burstX[(2*index) + 1]
-				burstY[burstIndex] = burstY[index] + baseYSpacing * pow(0.7f, float(currLayer));// (DISTANCE EQUATION);	//burstY[(2*index) + 1]
+				burstX[burstIndex] = burstX[index] - baseXSpacing * pow(0.7f, float(currLayer));// (distance equation);	//alt: burstX[(2*index) + 1]
+				burstY[burstIndex] = burstY[index] + baseYSpacing * pow(0.7f, float(currLayer));// (distance equation);	//alt: burstY[(2*index) + 1]
 				//create & initialize satellite bursts
 				burst[burstIndex].setColor(currColor);
 				burst[burstIndex].setRotation(rotation);
@@ -213,7 +213,6 @@ bool Spiral::timeForMarkerTick() {
 }
 
 void Spiral::MarkerTick(RenderWindow &window) {
-	//markerX, markerY
 	float MARKER_TICKS = 2334.f;
 	float colorsPerChunk = MARKER_TICKS / 3.5f;
 	float colorShiftPerTick = 255.f / colorsPerChunk;
@@ -343,15 +342,15 @@ bool Spiral::timeForNextArrow() {
 void Spiral::addNextArrow() {
 
 	arrow.setPosition(markerX, markerY);
-	//SEVEN COLOR CHUNKS SPACED EVENLY ALONG FULL SPIRAL (Black->Red | Red->Yellow | ... ... ... | Violet->White)
-	arrow.setColor(currColor);	//CURRENT COLOR WILL BE UPDATED IN MarkerTick() FUNCTION
+	//seven color chunks spaced evenly along full spiral (Black->Red | Red->Yellow | ... ... ... | Violet->White)
+	arrow.setColor(currColor);	//current color will be updated IN MarkerTick() function
 	float rotation = 90.f - thetaDegrees;
 	arrow.setRotation(rotation);
 	shapesVector.push_back(arrow);
 }
 
 bool Spiral::timeToSwitchQuadrants() {
-	//RESET currNoOfQuadrantTicks EACH TIME A QUADRANT IS COMPLETED
+	//reset currNoOfQuadrantTicks each time a quadrant is completed
 	if (currNoOfQuadrantTicks >= ticksInCurrentQuadrant)
 		return true;
 	else
@@ -360,7 +359,7 @@ bool Spiral::timeToSwitchQuadrants() {
 
 void  Spiral::switchQuadrants() {
 	quadrant++;
-	//ORDER OF QUADRANTS (SPIRAL) = TR, BR, BL, TL, TR, BR, BL, TL, etc.
+	//order of quadrants (spiral) = TR, BR, BL, TL, TR, BR, BL, TL, etc.
 	if (quadrant > TL)
 		quadrant = TR;
 	currNoOfQuadrantTicks = 0;
@@ -382,5 +381,5 @@ void  Spiral::render(RenderWindow &window) {
 }
 
 void  Spiral::saveToImage() {
-	//copy from linearCircletest() function
+	//implementation in Test class
 }

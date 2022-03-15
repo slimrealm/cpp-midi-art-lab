@@ -22,15 +22,17 @@ public:
 
 	bool drawingActive;
 	bool initialized = false;
-	std::list<Sprite> shapesList;
-	Clock drawingClock, refreshClock;
-	Texture treeTex, rockTex, refreshTex;
-	Sprite tree, rock, refreshSprite;
 	float PI = 3.1415926535897932384f;
 	float trajDeg, trajRad, fatness, angleChange;
 	float conv = (PI/180.f);
-	Event event;
 	int stage;
+
+	std::list<Sprite> shapesList;
+
+	Clock drawingClock, refreshClock;
+	Texture treeTex, rockTex, refreshTex;
+	Sprite tree, rock, refreshSprite;
+	Event event;
 	Color currColor;
 
 	void run(RenderWindow &window, int &width, int &height);

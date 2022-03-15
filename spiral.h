@@ -9,6 +9,7 @@
 #include <conio.h>
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
+
 using namespace sf;
 
 /**
@@ -42,7 +43,7 @@ public:
 
 	int TR = 1, BR = 2, BL = 3, TL = 4;
 	int quadrant = TR;
-	float ADJUSTMENT_WIDTH = 20.f;	//ADJUST THIS TO EXPERIMENT WITH DIFFERENT SPIRAL DENSITIES
+	float ADJUSTMENT_WIDTH = 20.f;	//adjust this to experiment with different spiral densities
 	float leftAsymptote = (float)(VideoMode::getDesktopMode().width / 2.f);
 	float rightAsymptote = leftAsymptote + ADJUSTMENT_WIDTH;
 	float topAsymptote = (float)(VideoMode::getDesktopMode().height / 2.f);

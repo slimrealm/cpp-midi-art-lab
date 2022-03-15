@@ -12,12 +12,10 @@ extern int screen;
 extern int testChoice, screen;
 
 /**
-* CALLBACK MidiInProc() function
+* Grabs each MIDI parameter (pitch, velocity, duration) when MIDI byte is received and assigns to
+* appropriate drawing parameters.  It pushes these numbers into a queue to be popped
+* by the drawing algorithm function
 *
-* Upon receiving a MIDI byte(s), this function is called
-* it grabs each MIDI parameter (pitch, velocity, duration) and assigns them to
-* appropriate draing parameters.  It pushes these numbers into a queue to be popped
-* by the drawing algorithm
 * @param HMIDIIN hMidiIn
 * @param UINT wMsg
 * @param DWORD dwInstance
@@ -57,7 +55,7 @@ void CALLBACK MidiInProc(HMIDIIN hMidiIn, UINT wMsg, DWORD dwInstance, DWORD dwP
 		velocity = (dwParam1 >> 16) & 0x000000FF;
 		if (noteOnOrOff == 144) {
 			onOff = ON;
-			//record timestamp for that note
+			//record timestamp for this note
 			notesPressed[note] = inputClock.getElapsedTime().asMilliseconds();
 			velocities[note] = velocity;
 		}
@@ -122,14 +120,12 @@ void CALLBACK MidiInProc(HMIDIIN hMidiIn, UINT wMsg, DWORD dwInstance, DWORD dwP
 }
 
 
-//FUNCTIONS OF SEGMENTS CLASS
+/* Segments class functions */
 
 /**
-* run() function
-*
-* algorithm moves from left side of screen to right side.  Line shape is instantiated, and main
-* drawing loops, each iteration collecting MIDI input and then displaying the next frame
+* Algorithm moves from left to right side of screen.  Line shape is instantiated, and drawing loops, each iteration collecting MIDI input and then displaying the next frame
 * to the screen.
+*
 * @param RenderWindow &window
 */
 void Segments::run(RenderWindow &window) {
@@ -170,7 +166,7 @@ void Segments::run(RenderWindow &window) {
 	line.setTexture(lineTex);
 	line.setOrigin(2.f, 0.f);
 
-	//MAIN LOOP
+	//main loop
 	bool drawingActive = true;
 	static int ticksPerSecond = 40;
 	updates = 0;
@@ -215,9 +211,7 @@ void Segments::run(RenderWindow &window) {
 }
 
 /**
-* pollInput() function
-*
-* Check the USB MIDI connection for new incoming data.  If there is new data, a CALLBACK is triggered and
+* Checks the USB MIDI connection for new incoming data.  If there is new data, a CALLBACK is triggered and
 * the new pitch, velocity, and status bytes are pushed to the input queue for later access by the
 * grabAndPopNextInput() function.
 */
@@ -234,14 +228,13 @@ void Segments::pollInput() {
 				std::cout << "PROBLEM!!!";
 		}
 	}
-} //pollInput
+}
 
 /**
-* update() function
-*
 * This is called on every tick of the drawing algorithm.  The input queue is checked, and if not empty,
 * the next duration, pitch, and velocity values are popped, and the addCorrespondingShapes() function is
 * called to add the next set of zigzag lines to the ShapesVector for drawing. 
+*
 * @param RenderWindow &window
 */
 void Segments::update(RenderWindow &window) {
@@ -254,8 +247,6 @@ void Segments::update(RenderWindow &window) {
 }
 
 /**
-* grabAndPopNextInput() function
-*
 * Checks input queue -- if not empty, the next durationIn, noteIn, and velocityIn values are popped. These
 * will be used in the addCorrespondingShapes function.
 */
@@ -273,10 +264,8 @@ bool Segments::grabAndPopNextInput() {
 }
 
 /**
-* addCorrespondingShapes() function
+* Add next chunk of zigzag lines, using the numerical values durationIn, noteIn, and velocityIn to determine the opacity, angle, and starting y-position.
 *
-* The numerical values durationIn, noteIn, and velocityIn are used to determine the opacity, angle, and starting y-position
-* of the next chunk of zigzag lines.  
 * @param RenderWindow &window
 */
 void Segments::addCorrespondingShapes(RenderWindow &window) {
@@ -284,13 +273,13 @@ void Segments::addCorrespondingShapes(RenderWindow &window) {
 	//update drawing variables based on input
 	static bool firstNoteDone = false;
 
-	//Y POSITION BASED ON PITCH
+	//y position based on pitch
 	static float yRange = float(height) - 100.f; // from 50 to height - 50
 	static float noteRange = 87.f; //108-21
 	static float yPixelsPerNote = yRange / noteRange;
 	float yPosOnScreen = height - (50 + (yPixelsPerNote * (noteIn - 21)));
 
-	//HOWMANYSEGMENTS AND STARTLENGTH BASED ON DURATION
+	//howmanysegments and startlength based on note duration
 	//duration range 1/20 to 3 seconds (original integer values 1 to 60)
 	float howManySegmentsRange;
 	int howManySegments = (durationIn / 3) + 1;
@@ -299,7 +288,7 @@ void Segments::addCorrespondingShapes(RenderWindow &window) {
 	float lengthPerSegment = startLengthRange / howManySegmentsRange;
 	float startLength = 40 - (lengthPerSegment * howManySegments);
 
-	//BRIGHTNESS / OPAQUENESS BASED ON VELOCITY (and start angle?)
+	//brightness / opaqueness based on velocity (and start angle?)
 	float startAngle;
 	if (velocityIn >= 20 && velocityIn <= 107) {
 		startAngle = (velocityIn - 20) * (127.f / 88.f);
@@ -312,7 +301,7 @@ void Segments::addCorrespondingShapes(RenderWindow &window) {
 	std::cout << startAngle << "   ";
 	color.a = 2 * velocityIn;
 
-	//TURN ANGLE INCREMENT = equation from COMBINATION of howManySegments AND yPosOnScreen
+	//turn angle increment = equation from combination of howManySegments and yPosOnScreen
 	float turnAngleIncrement = 10;
 	drawChunk(xPosOnScreen, yPosOnScreen, startAngle, howManySegments, startLength, turnAngleIncrement, window);
 	if (!firstNoteDone)
@@ -320,18 +309,17 @@ void Segments::addCorrespondingShapes(RenderWindow &window) {
 }
 
 /**
-* drawChunk() function
-*
-* A set of zigzag lines are drawn, based on the parameters given.  The colors, number of lines,
+* Draws a set of zigzag lines, based on the parameters given.  The colors, number of lines,
 * angle changes of the zigzag, and segment lengths are all based on these parameters.  Each line
 * is added to the shapesVector for drawing.
+*
 * @param float xPosOnScreen
 * @param float yPosOnScreen
 * @param float startAngle
 * @param int howManySegments
 * @param float startLength
 * @param float turnAngleIncrement
-* @param RenderWindow &window
+* @param RenderWindow &window - the current game window
 */
 void Segments::drawChunk(float xPosOnScreen, float yPosOnScreen, float startAngle,
 	int howManySegments, float startLength, float turnAngleIncrement, RenderWindow &window) {
@@ -367,10 +355,9 @@ void Segments::drawChunk(float xPosOnScreen, float yPosOnScreen, float startAngl
 }
 
 /**
-* render() function
-*
 * Draw to window all shapes that are currently in the shapesVector
-* @param RenderWindow &window
+*
+* @param RenderWindow &window - the current game window
 */
 void Segments::render(RenderWindow &window) {
 	static bool initialized = false;
@@ -413,13 +400,12 @@ void Segments::render(RenderWindow &window) {
 }
 
 
-//FUNCTIONS OF TURTLE CLASS
+/* Turtle class functions */
 
 /**
-* moveTo() function
-*
-* moves turtle to a new location without drawing
+* Moves turtle to a new location without drawing
 * to the screen.
+*
 * @param newX
 * @param newY
 */
@@ -428,10 +414,9 @@ void Turtle::moveTo(float newX, float newY) {
 }
 
 /**
-* move() function
-*
-* moves turtle to new location AFTER adding a line to the shapesVector at the turtle's old
+* Moves turtle to new location AFTER adding a line to the shapesVector at the turtle's old
 * location using the turtle's angle
+* 
 * @param float distance
 * @param Sprite &line
 * @param std::vector<Sprite> &shapesVector
@@ -450,9 +435,8 @@ void Turtle::move(float distance, Sprite &line, std::vector<Sprite> &shapesVecto
 }
 
 /**
-* turn() function
-*
-* turns the turtle by a specified angle
+* Turns the turtle by a specified angle
+* 
 * @param float turnAngle
 */
 void Turtle::turn(float turnAngle) {

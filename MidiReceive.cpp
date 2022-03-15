@@ -30,8 +30,8 @@ void CALLBACK MidiReceive::MidiInProc(HMIDIIN hMidiIn, UINT wMsg, DWORD dwInstan
 		printf("wMsg=MIM_CLOSE\n");
 		break;
 	case MIM_DATA:
+		//other params: printf("wMsg=MIM_DATA, dwInstance=%08x, dwParam1=%08x, dwParam2=%08x\n", dwInstance, dwParam1, dwParam2);
 		printf("wMsg=MIM_DATA, dwParam1=%08x\n", dwParam1);
-		//printf("wMsg=MIM_DATA, dwInstance=%08x, dwParam1=%08x, dwParam2=%08x\n", dwInstance, dwParam1, dwParam2);
 		break;
 	case MIM_LONGDATA:
 		printf("wMsg=MIM_LONGDATA\n");

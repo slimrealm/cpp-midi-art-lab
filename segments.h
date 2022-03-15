@@ -12,11 +12,9 @@
 using namespace sf;
 
 /**
-* Turtle class
-*
-* Provides turtle-style drawing functions
-* moveTo: "pick up pen" and move to new location
-* move: "with pen down", draw line of length distance, from current location in direction of current
+* the Turtle class provides turtle graphics type drawing functions
+* moveTo: pick up pen and move to new location
+* move: with pen down, draw line of length distance, from current location in direction of current
 * turtle angle
 * turn: turn turtle the given angle
 */
@@ -32,11 +30,9 @@ public:
 };
 
 /**
-* Segments class
-*
-* drawing algorithm that draws zigzag line segments.  The opaqueness, angle, and position on screen
+* The Segments class implements a drawing algorithm that draws zigzag line segments.  The opaqueness, angle, and position on screen
 * are guided by input from the MIDI controller.  Input is added to a queue as it is received and then
-* pop as fast as possible through the course of the algorithm.
+* popped as fast as possible through the course of the algorithm.
 */
 class Segments {
 public:

@@ -6,10 +6,9 @@ const int HOME = 1, TEST_MENU = 2, CHOOSE_ALGORITHM = 3, LCT = 4, SPIRAL = 5, FO
 bool isTest = false;
 
 /**
-* run() function
-* 
-* calls homeScreen() function, then allows user to choose drawing algorithm, then runs corresponding algorithm
-* @param RenderWindow &window
+* Calls homeScreen() function, then allows user to choose drawing algorithm, then runs it
+*
+* @param RenderWindow the active game window
 */
 void MIDI_art_lab::run(RenderWindow &window) {
 
@@ -69,9 +68,7 @@ void MIDI_art_lab::run(RenderWindow &window) {
 }
 
 /**
-* homeScreen() function
-*
-* loads home screen (unfinished)
+* Loads home screen (unfinished)
 */
 void MIDI_art_lab::homeScreen() {
 	screen = HOME;
@@ -79,10 +76,10 @@ void MIDI_art_lab::homeScreen() {
 }
 
 /**
-* testMenu() function
+* Displays menu prompting user to choose one of four project tests or go to the choose algorithm menu
 *
-* user chooses one of four project tests or the choose algorithm screen
-@ return int choice
+* @param RenderWindow the active game window
+* @return user menu choice
 */
 int MIDI_art_lab::testMenu(RenderWindow &window) {
 	screen = TEST_MENU;
@@ -147,11 +144,10 @@ int MIDI_art_lab::testMenu(RenderWindow &window) {
 }
 
 /**
-* chooseAlgorithm() function
-*
-* returns user's choice of algorithm as an int
+* Returns user's choice of algorithm as an int
 * user clicks on algorithm of choice
-@ return int choice
+*
+* @return int choice
 */
 int MIDI_art_lab::chooseAlgorithm(RenderWindow &window) {
 	screen = CHOOSE_ALGORITHM;

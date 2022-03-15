@@ -10,9 +10,7 @@
 using namespace sf;
 
 /**
-* MIDI_art_lab class
-*
-* get window dimensions, define drawing algorithms, declare main functions
+* MIDI_art_lab class -- get window dimensions, define drawing algorithms, declare main functions
 */
 class MIDI_art_lab {
 
