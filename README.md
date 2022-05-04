@@ -11,7 +11,6 @@ The user can choose between three drawing algorithms (example image output for e
 **3. Custom path which changes direction depending which notes are played**
 
 <br>
-<br>
 
 
 ## 1. Spiral algorithm
