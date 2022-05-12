@@ -4,7 +4,7 @@ MIDI Art Lab generates digital art based on notes played on a connected MIDI key
 
 Pitch, velocity, and duration are captured, and those numeric values are used as parameters of a function for a particular drawing algorithm.  Currently, a single image is used and repeated throughout the drawing -- and the appearance of each new instance of that image changes based on the received parameters.  These drawing parameters include color, transparency, thickness, scale, angle, spacing between images, and number of images spawned over a given area.
 
-The user can choose between three drawing algorithms (example image output for each shown below):
+The user can choose between three drawing algorithms (image output samples for each shown below):
 
 **1. Spiral**  
 **2. Shifting lines of images**  
